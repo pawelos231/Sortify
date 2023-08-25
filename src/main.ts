@@ -1,5 +1,2 @@
-import { Visualizer } from "./modules/Visualizer";
-
-console.log("yo");
-
-const vis = new Visualizer(60);
+import { Picker } from "./modules/Picker";
+const vis = new Picker(60);

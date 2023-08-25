@@ -7,10 +7,14 @@ export class Visualizer extends Common<true> {
     super("visualization");
     this.arr = [];
     this.n = n;
+    this.createNewArr();
+  }
+  public createNewArr() {
+    this.elementId.innerHTML = "";
     this.populateRandomArray();
-    this.bubbleSort();
     this.createArrayView();
   }
+
   private populateRandomArray() {
     for (let i = 0; i < this.n; i++) {
       this.arr[i] = Math.random();
