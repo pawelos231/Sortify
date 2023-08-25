@@ -1,2 +1,2 @@
 import { Picker } from "./modules/Picker";
-const vis = new Picker(60);
+const vis = new Picker();

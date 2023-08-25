@@ -1,5 +1,7 @@
 import { Common } from "./Common";
 
+type SortFunc = (arr: number[]) => void;
+
 export class Visualizer extends Common<true> {
   arr: number[];
   n: number;
@@ -9,6 +11,13 @@ export class Visualizer extends Common<true> {
     this.n = n;
     this.createNewArr();
   }
+
+  public visualizeNewArr(sorter: SortFunc) {
+    sorter(this.arr);
+    this.elementId.innerHTML = "";
+    this.createArrayView();
+  }
+
   public createNewArr() {
     this.elementId.innerHTML = "";
     this.populateRandomArray();
@@ -26,20 +35,6 @@ export class Visualizer extends Common<true> {
       bar.classList.add("bar");
       this.elementId.appendChild(bar);
       bar.style.height = `${num * 100}%`;
-    }
-  }
-  bubbleSort() {
-    let arr = this.arr;
-    const n = arr.length;
-
-    for (let i = 0; i < n - 1; i++) {
-      for (let j = 0; j < n - i - 1; j++) {
-        if (arr[j] > arr[j + 1]) {
-          const temp = arr[j];
-          arr[j] = arr[j + 1];
-          arr[j + 1] = temp;
-        }
-      }
     }
   }
 }
