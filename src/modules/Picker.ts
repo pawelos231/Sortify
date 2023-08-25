@@ -25,7 +25,10 @@ export class Picker extends Common {
   }
   addPlayBtnListener() {
     this.playBtn.addEventListener("click", () => {
-      this.visualizer.visualizeNewArr(bubbleSort);
+      const copy = [...this.visualizer.getArr];
+      const swaps = bubbleSort(copy);
+      console.log(swaps);
+      this.visualizer.animate(swaps);
     });
   }
 }
