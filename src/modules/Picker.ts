@@ -8,12 +8,16 @@ import { Algorithms } from "../constants/enums";
 import { insertionSort } from "../algos/insertion";
 
 const DEFAULT_ARRAY_SIZE = 100;
-type SortFunc = (arr: number[]) => Move[];
+
+type AlgorithmType = {
+  AlgorithmFunction: (arr: number[]) => Move[];
+  AlgorithmName: Algorithms;
+};
 
 export class Picker extends Common {
   newArrBtn: HTMLButtonElement;
   playBtn: HTMLButtonElement;
-  algorithm: SortFunc;
+  algorithm: AlgorithmType;
   visualizer: Visualizer;
   n: number;
   constructor(n?: number) {
@@ -24,7 +28,11 @@ export class Picker extends Common {
     this.n = n ?? DEFAULT_ARRAY_SIZE;
     this.visualizer = new Visualizer(this.n, VisualizationSpeed.ULTRA_FAST);
 
-    this.algorithm = bubbleSort;
+    this.algorithm = {
+      AlgorithmFunction: bubbleSort,
+      AlgorithmName: Algorithms.BUBBLE,
+    };
+
     this.addGenNewArrListener();
     this.addPlayBtnListener();
     this.addSortSelectionListener();
@@ -38,8 +46,15 @@ export class Picker extends Common {
   private addPlayBtnListener() {
     this.playBtn.addEventListener("click", () => {
       const copy = [...this.visualizer.getArr];
-      const moves = this.algorithm(copy);
-      this.visualizer.animate(moves);
+      const moves = this.algorithm.AlgorithmFunction(copy);
+      if (!this.visualizer.isAlgoRunning) {
+        this.visualizer.animate(moves);
+      } else {
+        this.displayMessageAtTheTopOfTheScreen(
+          `${this.algorithm.AlgorithmName} sort is currently running`,
+          Logger.Error
+        );
+      }
     });
   }
 
@@ -56,19 +71,31 @@ export class Picker extends Common {
 
       switch (e.target.value) {
         case Algorithms.BUBBLE: {
-          this.algorithm = bubbleSort;
+          this.algorithm = {
+            AlgorithmFunction: bubbleSort,
+            AlgorithmName: Algorithms.BUBBLE,
+          };
           break;
         }
         case Algorithms.SELECTION: {
-          this.algorithm = insertionSort;
+          this.algorithm = {
+            AlgorithmFunction: insertionSort,
+            AlgorithmName: Algorithms.SELECTION,
+          };
           break;
         }
         case Algorithms.INSERTION: {
-          this.algorithm = insertionSort;
+          this.algorithm = {
+            AlgorithmFunction: insertionSort,
+            AlgorithmName: Algorithms.INSERTION,
+          };
           break;
         }
         default: {
-          this.algorithm = bubbleSort;
+          this.algorithm = {
+            AlgorithmFunction: bubbleSort,
+            AlgorithmName: Algorithms.BUBBLE,
+          };
         }
       }
     });

@@ -12,17 +12,23 @@ export class Visualizer extends Common<true> {
   n: number;
   speed: number;
   audioContext: AudioContext;
+  isRunningAlgorithm: boolean;
   constructor(n: number, speed: VisualizationSpeed) {
     super("visualization");
     this.audioContext = new AudioContext();
     this.arr = [];
     this.n = n;
     this.speed = speed;
+    this.isRunningAlgorithm = false;
     this.createNewArr();
   }
 
   get getArr(): number[] {
     return this.arr;
+  }
+
+  get isAlgoRunning(): boolean {
+    return this.isRunningAlgorithm;
   }
 
   public visualizeNewArr(sorter: SortFunc) {
@@ -51,8 +57,11 @@ export class Visualizer extends Common<true> {
     if (moves.length === 0) {
       this.runSortedArray(0);
       this.createArrayView();
+      this.isRunningAlgorithm = false;
       return;
     }
+
+    this.isRunningAlgorithm = true;
     const move = moves.shift();
 
     const [i, j] = move?.indices as number[];
