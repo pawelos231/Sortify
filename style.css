@@ -2,23 +2,23 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     background-color: #f0f0f0;
   }
 
   .container {
     text-align: center;
+    padding: 40px;
+  }
+
+  h1 {
+    margin-bottom: 20px;
   }
 
   #visualization {
-    width: 80%;
+    width: 100%;
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
-    height: 200px;
+    height: 300px;
     display: flex;
     align-items: flex-end;
     border: 1px solid #ccc;
@@ -26,11 +26,27 @@ body {
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
   }
 
+  .bar {
+    background-color: #3498db;
+    width: 10px;
+    margin: 0 1px;
+    transition: height 0.2s ease-in-out;
+  }
+
   #algo-select {
     margin-bottom: 20px;
   }
 
-  .bar{
-    background-color: black;
-    width: 10px;
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #2ecc71;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  button:hover {
+    background-color: #27ae60;
   }
