@@ -1,7 +1,7 @@
 import { VisualizationSpeed } from "../constants/enums";
 import { Common } from "./Common";
 import { Visualizer } from "./Visualizer";
-import { bubbleSort } from "./bubble";
+import { bubbleSort } from "../algos/bubble";
 
 const DEFAULT_ARRAY_SIZE = 100;
 

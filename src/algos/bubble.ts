@@ -1,9 +1,5 @@
 import { MoveType } from "../constants/enums";
-
-export type Move = {
-  indices: number[];
-  type: MoveType;
-};
+import { Move } from "./types";
 
 export const bubbleSort = (arr: number[]): Move[] => {
   const n = arr.length;

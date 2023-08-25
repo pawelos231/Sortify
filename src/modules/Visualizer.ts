@@ -1,6 +1,6 @@
 import { MoveType, VisualizationSpeed } from "../constants/enums";
 import { Common } from "./Common";
-import { Move } from "./bubble";
+import { Move } from "../algos/types";
 type SortFunc = (arr: number[]) => number[][];
 type Check = {
   check: true;
