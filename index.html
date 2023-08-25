@@ -1,12 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="./style.css">
+<title>Sorting Algorithm Visualizer</title>
+<style>
+</style>
 </head>
 <body>
-    siema
-    <script type="module" src="./out/main.js"></script>
+<div class="container">
+  <h1>Sorting Algorithm Visualizer</h1>
+  <div id="algo-select">
+    <label for="sorting-algo">Select a sorting algorithm:</label>
+    <select id="sorting-algo">
+      <option value="bubble">Bubble Sort</option>
+      <option value="selection">Selection Sort</option>
+      <option value="insertion">Insertion Sort</option>
+      <!-- Add more sorting algorithms here -->
+    </select>
+    <button id="start-button">Start Visualization</button>
+  </div>
+  <div id="visualization"></div>
+</div>
+
+<script src="./out/main.js"></script>
 </body>
 </html>
