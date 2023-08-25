@@ -1,3 +1,4 @@
+import { VisualizationSpeed } from "../constants/enums";
 import { Common } from "./Common";
 import { Visualizer } from "./Visualizer";
 import { bubbleSort } from "./bubble";
@@ -14,7 +15,7 @@ export class Picker extends Common {
     this.newArrBtn = this.bindElementByClass("newArr") as HTMLButtonElement;
     this.playBtn = this.bindElementByClass("play") as HTMLButtonElement;
     this.n = n ?? DEFAULT_ARRAY_SIZE;
-    this.visualizer = new Visualizer(this.n);
+    this.visualizer = new Visualizer(this.n, VisualizationSpeed.ULTRA_FAST);
     this.addGenNewArrListener();
     this.addPlayBtnListener();
   }
@@ -26,9 +27,8 @@ export class Picker extends Common {
   addPlayBtnListener() {
     this.playBtn.addEventListener("click", () => {
       const copy = [...this.visualizer.getArr];
-      const swaps = bubbleSort(copy);
-      console.log(swaps);
-      this.visualizer.animate(swaps);
+      const moves = bubbleSort(copy);
+      this.visualizer.animate(moves);
     });
   }
 }
