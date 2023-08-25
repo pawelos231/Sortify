@@ -81,6 +81,10 @@ export class Visualizer extends Common<true> {
       const bar = document.createElement("div");
       bar.classList.add("bar");
       bar.style.height = `${this.arr[i] * 100}%`;
+      bar.style.width = `${100 / this.n}%`;
+      if (this.n > 200) {
+        bar.style.margin = "0px";
+      }
       if (move && move.indices.includes(i)) {
         bar.style.backgroundColor = move.type == MoveType.swap ? "red" : "blue";
       }
@@ -95,7 +99,7 @@ export class Visualizer extends Common<true> {
   private playSound(freq: number) {
     const duration = 5 / this.n;
     const osc = this.audioContext.createOscillator();
-    osc.frequency.value = freq;
+    osc.frequency.value = isNaN(freq) ? 1500 : freq;
     osc.type = "sine";
     osc.start();
     osc.stop(this.audioContext.currentTime + duration);

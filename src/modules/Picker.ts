@@ -5,6 +5,7 @@ import { bubbleSort } from "../algos/bubble";
 import { Move } from "../algos/types";
 import { Logger } from "../constants/enums";
 import { Algorithms } from "../constants/enums";
+import { insertionSort } from "../algos/insertion";
 
 const DEFAULT_ARRAY_SIZE = 100;
 type SortFunc = (arr: number[]) => Move[];
@@ -47,6 +48,7 @@ export class Picker extends Common {
     select.addEventListener("change", (e: any) => {
       const sortType = e.target.value as Algorithms;
 
+      this.visualizer.createNewArr();
       this.displayMessageAtTheTopOfTheScreen(
         `selected ${sortType} sort`,
         Logger.Message
@@ -58,7 +60,7 @@ export class Picker extends Common {
           break;
         }
         case Algorithms.SELECTION: {
-          this.algorithm = selectionSort;
+          this.algorithm = insertionSort;
           break;
         }
         case Algorithms.INSERTION: {
