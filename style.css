@@ -8,6 +8,7 @@ body {
   .container {
     text-align: center;
     padding: 40px;
+    margin-top: 5%;
   }
 
   h1 {
@@ -15,10 +16,10 @@ body {
   }
 
   #visualization {
-    width: 100%;
-    max-width: 800px;
+    width: 90%;
     margin: 0 auto;
     height: 300px;
+    margin-bottom:  20px;
     display: flex;
     align-items: flex-end;
     border: 1px solid #ccc;
@@ -49,4 +50,21 @@ body {
 
   button:hover {
     background-color: #27ae60;
+  }
+
+  .MESSAGE {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    color: white;
+    background-color: rgba(0, 0, 0, 1);
+    padding: 10px;
+    border: 2px solid white;
+    border-radius: 8px;
+  }
+  
+  .hidden {
+    display: none !important;
   }

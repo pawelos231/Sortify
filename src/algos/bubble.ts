@@ -6,10 +6,6 @@ export const bubbleSort = (arr: number[]): Move[] => {
   const moves = [];
   for (let i = 0; i < n - 1; i++) {
     for (let j = 0; j < n - i - 1; j++) {
-      moves.push({
-        indices: [j + 1, j],
-        type: MoveType.comp,
-      });
       if (arr[j] > arr[j + 1]) {
         moves.push({
           indices: [j + 1, j],

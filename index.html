@@ -9,11 +9,12 @@
 </style>
 </head>
 <body>
+    <div class="hidden MESSAGE"></div>
     <div class="container">
       <h1>Sorting Algorithm Visualizer</h1>
       <div id="algo-select">
         <label for="sorting-algo">Select a sorting algorithm:</label>
-        <select id="sorting-algo">
+        <select class="sorting-algo">
           <option value="bubble">Bubble Sort</option>
           <option value="selection">Selection Sort</option>
           <option value="insertion">Insertion Sort</option>
@@ -24,7 +25,6 @@
       <button class="newArr">GENERATE NEW ARR</button>
       <button class="play">PLAY</button>
     </div>
-    
     <script type="module" src="./out/main.js"></script>
     </body>
 </html>

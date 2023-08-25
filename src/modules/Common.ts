@@ -1,12 +1,5 @@
 import { HIDDEN } from "../constants/classNames";
-
-const REGISTER_FORMS = "RegisterElement";
-
-enum Logger {
-  Message = 0,
-  Warn = 1,
-  Error = 2,
-}
+import { Logger } from "../constants/enums";
 
 type CommonElementIdType<T extends boolean> = T extends true
   ? HTMLElement

@@ -1,7 +1,7 @@
 import { MoveType, VisualizationSpeed } from "../constants/enums";
 import { Common } from "./Common";
 import { Move } from "../algos/types";
-type SortFunc = (arr: number[]) => number[][];
+type SortFunc = (arr: number[]) => Move[];
 type Check = {
   check: true;
   index: number;
@@ -39,7 +39,7 @@ export class Visualizer extends Common<true> {
 
   private runSortedArray(i: number) {
     if (i > this.arr.length) return;
-    this.playSound(200 + this.arr[i] * 500);
+    this.playSound(200 + this.arr[i] * 1500);
     this.createArrayView(undefined, { check: true, index: i });
 
     setTimeout(() => {
