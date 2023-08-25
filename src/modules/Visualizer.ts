@@ -44,7 +44,7 @@ export class Visualizer extends Common<true> {
 
     setTimeout(() => {
       this.runSortedArray(i + 1);
-    }, this.speed);
+    }, this.speed * 4);
   }
 
   public animate(moves: Move[]) {
@@ -61,6 +61,7 @@ export class Visualizer extends Common<true> {
       [this.arr[i], this.arr[j]] = [this.arr[j], this.arr[i]];
     }
     if (i % 5 == 0) this.playSound(200 + this.arr[i] * 500);
+    if (j % 5 == 0) this.playSound(200 + this.arr[j] * 500);
 
     this.createArrayView(move);
     setTimeout(() => {
@@ -98,6 +99,13 @@ export class Visualizer extends Common<true> {
     osc.type = "sine";
     osc.start();
     osc.stop(this.audioContext.currentTime + duration);
-    osc.connect(this.audioContext.destination);
+    const node = this.audioContext.createGain();
+    node.gain.value = 0.1;
+    node.gain.linearRampToValueAtTime(
+      0,
+      this.audioContext.currentTime + duration
+    );
+    osc.connect(node);
+    node.connect(this.audioContext.destination);
   }
 }
