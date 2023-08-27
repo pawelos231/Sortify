@@ -13,7 +13,6 @@ export const insertionSort = (arr: number[]): Move[] => {
       arr[j + 1] = arr[j];
       moves.push({
         indices: [j + 1, j],
-        type: MoveType.swap,
       });
       j--;
     }

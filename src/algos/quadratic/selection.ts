@@ -14,7 +14,6 @@ export const selectionSort = (arr: number[]): Move[] => {
     if (min != i) {
       moves.push({
         indices: [min, i],
-        type: MoveType.swap,
       });
       const temp = arr[min];
       arr[min] = arr[i];

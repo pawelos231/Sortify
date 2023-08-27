@@ -38,13 +38,16 @@ export class Picker extends Common {
     this.addPlayBtnListener();
     this.addSortSelectionListener();
     this.addRangeListener();
+    this.addResetListener();
   }
 
   private addRangeListener() {
     const range = this.bindElementByClass("range");
     const rangeP = this.bindElementByClass("rangeInputDescription");
     range.addEventListener("input", (e: any) => {
+      this.resetVisualizer();
       const val = e.target.value;
+      this.n = val;
       rangeP.textContent = val;
       this.visualizer.setNumbersCount = val as number;
     });
@@ -52,7 +55,26 @@ export class Picker extends Common {
 
   private addGenNewArrListener() {
     this.newArrBtn.addEventListener("click", () => {
-      this.visualizer.createNewArr();
+      if (!this.visualizer.isAlgoRunning) {
+        this.visualizer.createNewArr();
+      } else {
+        this.displayMessageAtTheTopOfTheScreen(
+          `${this.algorithm.AlgorithmName} sort is currently running`,
+          Logger.Error
+        );
+      }
+    });
+  }
+
+  private resetVisualizer() {
+    this.visualizer.animate = function () {};
+    this.visualizer = new Visualizer(this.n, VisualizationSpeed.ULTRA_FAST);
+  }
+
+  private addResetListener() {
+    const reset = this.bindElementByClass("reset");
+    reset.addEventListener("click", () => {
+      this.resetVisualizer();
     });
   }
 
@@ -76,11 +98,7 @@ export class Picker extends Common {
     select.addEventListener("change", (e: any) => {
       const sortType = e.target.value as Algorithms;
 
-      this.visualizer.createNewArr();
-      this.displayMessageAtTheTopOfTheScreen(
-        `selected ${sortType} sort`,
-        Logger.Message
-      );
+      this.resetVisualizer();
 
       switch (e.target.value) {
         case Algorithms.BUBBLE: {

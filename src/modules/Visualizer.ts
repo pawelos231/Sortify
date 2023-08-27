@@ -73,7 +73,7 @@ export class Visualizer extends Common<true> {
 
     const [i, j] = move?.indices as number[];
 
-    if (move?.type == MoveType.swap) {
+    if (!move?.type || move?.type == MoveType.swap) {
       [this.arr[i], this.arr[j]] = [this.arr[j], this.arr[i]];
     }
     if (i % 5 == 0) this.playSound(200 + this.arr[i] * 1500);
@@ -106,7 +106,8 @@ export class Visualizer extends Common<true> {
         bar.style.margin = "0px";
       }
       if (move && move.indices.includes(i)) {
-        bar.style.backgroundColor = move.type == MoveType.swap ? "red" : "blue";
+        bar.style.backgroundColor =
+          !move.type || move.type == MoveType.swap ? "red" : "blue";
       }
       if (check?.check && check.index > i) {
         bar.style.backgroundColor = "green";

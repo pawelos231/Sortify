@@ -9,7 +9,6 @@ export const bubbleSort = (arr: number[]): Move[] => {
       if (arr[j] > arr[j + 1]) {
         moves.push({
           indices: [j + 1, j],
-          type: MoveType.swap,
         });
         const temp = arr[j];
         arr[j] = arr[j + 1];
