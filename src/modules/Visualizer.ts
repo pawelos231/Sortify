@@ -2,11 +2,8 @@ import { MoveType, VisualizationSpeed } from "../constants/enums";
 import { Common } from "./Common";
 import { Move } from "../algos/types";
 import { calculateDuration } from "../helpers/calulateDur";
+
 type SortFunc = (arr: number[]) => Move[];
-type Check = {
-  check: true;
-  index: number;
-};
 
 export class Visualizer extends Common<true> {
   arr: number[];
@@ -14,6 +11,7 @@ export class Visualizer extends Common<true> {
   speed: number;
   audioContext: AudioContext;
   isRunningAlgorithm: boolean;
+
   constructor(n: number, speed: VisualizationSpeed) {
     super("visualization");
     this.audioContext = new AudioContext();
@@ -40,30 +38,20 @@ export class Visualizer extends Common<true> {
 
   public visualizeNewArr(sorter: SortFunc) {
     sorter(this.arr);
-    this.elementId.innerHTML = "";
+    this.clearArrayView();
     this.createArrayView();
   }
 
   public initializeNewArr() {
-    this.elementId.innerHTML = "";
+    this.clearArrayView();
     this.populateRandomArray();
     this.initializeArrayView();
   }
 
   public createNewArr() {
-    this.elementId.innerHTML = "";
+    this.clearArrayView();
     this.populateRandomArray();
     this.createArrayView();
-  }
-
-  private runSortedArray(i: number) {
-    if (i > this.arr.length) return;
-    this.playSound(200 + this.arr[i] * 2000);
-    this.iterateOverSortedArray(i);
-
-    setTimeout(() => {
-      this.runSortedArray(i + 1);
-    }, this.speed);
   }
 
   public animate(moves: Move[]) {
@@ -79,11 +67,11 @@ export class Visualizer extends Common<true> {
 
     const [i, j] = move?.indices as number[];
 
-    if (!move?.type || move?.type == MoveType.swap) {
+    if (!move?.type || move?.type === MoveType.swap) {
       [this.arr[i], this.arr[j]] = [this.arr[j], this.arr[i]];
     }
-    if (i % 5 == 0) this.playSound(200 + this.arr[i] * 1500);
-    if (j % 5 == 0) this.playSound(200 + this.arr[j] * 1500);
+    this.playSoundOnStep(i);
+    this.playSoundOnStep(j);
 
     this.createArrayView(move);
     setTimeout(() => {
@@ -97,39 +85,57 @@ export class Visualizer extends Common<true> {
     }
   }
 
+  private clearArrayView() {
+    this.elementId.innerHTML = "";
+  }
+
+  private runSortedArray(i: number) {
+    if (i > this.arr.length) return;
+    this.playSoundOnStep(i);
+    this.iterateOverSortedArray(i);
+
+    setTimeout(() => {
+      this.runSortedArray(i + 1);
+    }, this.speed);
+  }
+
   private iterateOverSortedArray(i: number) {
     const bar = this.bindElementByClass(`bar${i}`);
     bar.style.backgroundColor = "green";
     if (i === this.arr.length - 1) this.createArrayView();
   }
 
-  private initializeArrayView() {
-    this.elementId.innerHTML = "";
+  private playSoundOnStep(step: number) {
+    if (step % 5 === 0) {
+      this.playSound(200 + this.arr[step] * 1500);
+    }
+  }
 
+  private initializeArrayView() {
     const fragment = document.createDocumentFragment();
 
     for (let i = 0; i < this.arr.length; i++) {
       const bar = document.createElement("div");
       bar.classList.add(`bar`, `bar${i}`);
-      bar.style.height = `${this.arr[i] * 100}%`;
-      bar.style.width = `${100 / this.n}%`;
-      if (this.n > 200) {
-        bar.style.margin = "0px";
-      }
+      this.styleArrayBar(bar, i);
       fragment.appendChild(bar);
     }
 
     this.elementId.appendChild(fragment);
   }
 
+  private styleArrayBar(bar: HTMLElement, i: number) {
+    bar.style.height = `${this.arr[i] * 100}%`;
+    bar.style.width = `${100 / this.n}%`;
+    if (this.n > 200) {
+      bar.style.margin = "0px";
+    }
+  }
+
   private createArrayView(move?: Move) {
     for (let i = 0; i < this.arr.length; i++) {
       const bar = this.bindElementByClass(`bar${i}`);
-      bar.style.height = `${this.arr[i] * 100}%`;
-      bar.style.width = `${100 / this.n}%`;
-      if (this.n > 200) {
-        bar.style.margin = "0px";
-      }
+      this.styleArrayBar(bar, i);
       bar.style.backgroundColor = "#3498db";
 
       if (move && move.indices.includes(i)) {

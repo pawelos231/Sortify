@@ -2,8 +2,7 @@ import { VisualizationSpeed } from "../constants/enums";
 import { Common } from "./Common";
 import { Visualizer } from "./Visualizer";
 import { Move } from "../algos/types";
-import { Logger } from "../constants/enums";
-import { Algorithms } from "../constants/enums";
+import { Logger, Algorithms } from "../constants/enums";
 import { insertionSort } from "../algos/quadratic/insertion";
 import { bubbleSort } from "../algos/quadratic/bubble";
 import { selectionSort } from "../algos/quadratic/selection";
@@ -21,6 +20,7 @@ export class Picker extends Common {
   algorithm: AlgorithmType;
   visualizer: Visualizer;
   n: number;
+
   constructor(n?: number) {
     super();
     this.newArrBtn = this.bindElementByClass("newArr") as HTMLButtonElement;
@@ -28,12 +28,16 @@ export class Picker extends Common {
 
     this.n = n ?? DEFAULT_ARRAY_SIZE;
     this.visualizer = new Visualizer(this.n, VisualizationSpeed.ULTRA_FAST);
-
     this.algorithm = {
       AlgorithmFunction: bubbleSort,
       AlgorithmName: Algorithms.BUBBLE,
     };
 
+    this.addEventListeners();
+    this.resetVisualizer();
+  }
+
+  private addEventListeners() {
     this.addGenNewArrListener();
     this.addPlayBtnListener();
     this.addSortSelectionListener();
@@ -44,26 +48,36 @@ export class Picker extends Common {
   private addRangeListener() {
     const range = this.bindElementByClass("range");
     const rangeP = this.bindElementByClass("rangeInputDescription");
-    range.addEventListener("input", (e: any) => {
-      this.resetVisualizer();
-      const val = e.target.value;
-      this.n = val;
-      rangeP.textContent = val;
-      this.visualizer.setNumbersCount = val as number;
-    });
+    range.addEventListener(
+      "input",
+      this.handleRangeInputChange.bind(this, rangeP)
+    );
+  }
+
+  private handleRangeInputChange(rangeP: HTMLElement, event: any) {
+    this.resetVisualizer();
+    const val = event.target.value;
+    this.n = val;
+    rangeP.textContent = val;
+    this.visualizer.setNumbersCount = val as number;
   }
 
   private addGenNewArrListener() {
-    this.newArrBtn.addEventListener("click", () => {
-      if (!this.visualizer.isAlgoRunning) {
-        this.visualizer.initializeNewArr();
-      } else {
-        this.displayMessageAtTheTopOfTheScreen(
-          `${this.algorithm.AlgorithmName} sort is currently running`,
-          Logger.Error
-        );
-      }
-    });
+    this.newArrBtn.addEventListener(
+      "click",
+      this.handleNewArrButtonClick.bind(this)
+    );
+  }
+
+  private handleNewArrButtonClick() {
+    if (!this.visualizer.isAlgoRunning) {
+      this.visualizer.initializeNewArr();
+    } else {
+      this.displayMessageAtTheTopOfTheScreen(
+        `${this.algorithm.AlgorithmName} sort is currently running`,
+        Logger.Error
+      );
+    }
   }
 
   private resetVisualizer() {
@@ -73,62 +87,68 @@ export class Picker extends Common {
 
   private addResetListener() {
     const reset = this.bindElementByClass("reset");
-    reset.addEventListener("click", () => {
-      this.resetVisualizer();
-    });
+    reset.addEventListener("click", this.handleResetButtonClick.bind(this));
+  }
+
+  private handleResetButtonClick() {
+    this.resetVisualizer();
   }
 
   private addPlayBtnListener() {
-    this.playBtn.addEventListener("click", () => {
-      const copy = [...this.visualizer.getArr];
-      const moves = this.algorithm.AlgorithmFunction(copy);
-      if (!this.visualizer.isAlgoRunning) {
-        this.visualizer.animate(moves);
-      } else {
-        this.displayMessageAtTheTopOfTheScreen(
-          `${this.algorithm.AlgorithmName} sort is currently running`,
-          Logger.Error
-        );
-      }
-    });
+    this.playBtn.addEventListener(
+      "click",
+      this.handlePlayButtonClick.bind(this)
+    );
+  }
+
+  private handlePlayButtonClick() {
+    const copy = [...this.visualizer.getArr];
+    const moves = this.algorithm.AlgorithmFunction(copy);
+    if (!this.visualizer.isAlgoRunning) {
+      this.visualizer.animate(moves);
+    } else {
+      this.displayMessageAtTheTopOfTheScreen(
+        `${this.algorithm.AlgorithmName} sort is currently running`,
+        Logger.Error
+      );
+    }
   }
 
   private addSortSelectionListener() {
     const select = this.bindElementByClass("sorting-algo");
-    select.addEventListener("change", (e: any) => {
-      const sortType = e.target.value as Algorithms;
+    select.addEventListener(
+      "change",
+      this.handleSortSelectionChange.bind(this)
+    );
+  }
 
-      this.resetVisualizer();
+  private handleSortSelectionChange(event: Event) {
+    const sortType = (event.target as HTMLSelectElement).value as Algorithms;
 
-      switch (e.target.value) {
-        case Algorithms.BUBBLE: {
-          this.algorithm = {
-            AlgorithmFunction: bubbleSort,
-            AlgorithmName: Algorithms.BUBBLE,
-          };
-          break;
-        }
-        case Algorithms.SELECTION: {
-          this.algorithm = {
-            AlgorithmFunction: selectionSort,
-            AlgorithmName: Algorithms.SELECTION,
-          };
-          break;
-        }
-        case Algorithms.INSERTION: {
-          this.algorithm = {
-            AlgorithmFunction: insertionSort,
-            AlgorithmName: Algorithms.INSERTION,
-          };
-          break;
-        }
-        default: {
-          this.algorithm = {
-            AlgorithmFunction: bubbleSort,
-            AlgorithmName: Algorithms.BUBBLE,
-          };
-        }
-      }
-    });
+    this.resetVisualizer();
+
+    switch (sortType) {
+      case Algorithms.BUBBLE:
+        this.setAlgorithmAndName(bubbleSort, Algorithms.BUBBLE);
+        break;
+      case Algorithms.SELECTION:
+        this.setAlgorithmAndName(selectionSort, Algorithms.SELECTION);
+        break;
+      case Algorithms.INSERTION:
+        this.setAlgorithmAndName(insertionSort, Algorithms.INSERTION);
+        break;
+      default:
+        this.setAlgorithmAndName(bubbleSort, Algorithms.BUBBLE);
+    }
+  }
+
+  private setAlgorithmAndName(
+    algorithmFunction: (arr: number[]) => Move[],
+    algorithmName: Algorithms
+  ) {
+    this.algorithm = {
+      AlgorithmFunction: algorithmFunction,
+      AlgorithmName: algorithmName,
+    };
   }
 }
