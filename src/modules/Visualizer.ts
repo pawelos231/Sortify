@@ -21,7 +21,7 @@ export class Visualizer extends Common<true> {
     this.n = n;
     this.speed = speed;
     this.isRunningAlgorithm = false;
-    this.createNewArr();
+    this.initializeNewArr();
   }
 
   get getArr(): number[] {
@@ -35,13 +35,19 @@ export class Visualizer extends Common<true> {
   set setNumbersCount(value: number) {
     this.n = value;
     this.arr = [];
-    this.createNewArr();
+    this.initializeNewArr();
   }
 
   public visualizeNewArr(sorter: SortFunc) {
     sorter(this.arr);
     this.elementId.innerHTML = "";
     this.createArrayView();
+  }
+
+  public initializeNewArr() {
+    this.elementId.innerHTML = "";
+    this.populateRandomArray();
+    this.initializeArrayView();
   }
 
   public createNewArr() {
@@ -53,7 +59,7 @@ export class Visualizer extends Common<true> {
   private runSortedArray(i: number) {
     if (i > this.arr.length) return;
     this.playSound(200 + this.arr[i] * 2000);
-    this.createArrayView(undefined, { check: true, index: i });
+    this.iterateOverSortedArray(i);
 
     setTimeout(() => {
       this.runSortedArray(i + 1);
@@ -62,8 +68,8 @@ export class Visualizer extends Common<true> {
 
   public animate(moves: Move[]) {
     if (moves.length === 0) {
-      this.runSortedArray(0);
       this.createArrayView();
+      this.runSortedArray(0);
       this.isRunningAlgorithm = false;
       return;
     }
@@ -91,28 +97,45 @@ export class Visualizer extends Common<true> {
     }
   }
 
-  private createArrayView(move?: Move, check?: Check) {
+  private iterateOverSortedArray(i: number) {
+    const bar = this.bindElementByClass(`bar${i}`);
+    bar.style.backgroundColor = "green";
+    if (i === this.arr.length - 1) this.createArrayView();
+  }
+
+  private initializeArrayView() {
     this.elementId.innerHTML = "";
-    if (check?.index == this.arr.length) {
-      this.createArrayView();
-      return;
-    }
+
+    const fragment = document.createDocumentFragment();
+
     for (let i = 0; i < this.arr.length; i++) {
       const bar = document.createElement("div");
-      bar.classList.add("bar");
+      bar.classList.add(`bar`, `bar${i}`);
       bar.style.height = `${this.arr[i] * 100}%`;
       bar.style.width = `${100 / this.n}%`;
       if (this.n > 200) {
         bar.style.margin = "0px";
       }
+      fragment.appendChild(bar);
+    }
+
+    this.elementId.appendChild(fragment);
+  }
+
+  private createArrayView(move?: Move) {
+    for (let i = 0; i < this.arr.length; i++) {
+      const bar = this.bindElementByClass(`bar${i}`);
+      bar.style.height = `${this.arr[i] * 100}%`;
+      bar.style.width = `${100 / this.n}%`;
+      if (this.n > 200) {
+        bar.style.margin = "0px";
+      }
+      bar.style.backgroundColor = "#3498db";
+
       if (move && move.indices.includes(i)) {
         bar.style.backgroundColor =
-          !move.type || move.type == MoveType.swap ? "red" : "blue";
+          !move.type || move.type === MoveType.swap ? "red" : "blue";
       }
-      if (check?.check && check.index > i) {
-        bar.style.backgroundColor = "green";
-      }
-      this.elementId.appendChild(bar);
     }
   }
 

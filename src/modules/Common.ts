@@ -41,6 +41,16 @@ export class Common<T extends boolean = false> {
     return element;
   }
 
+  protected bindElementByClassNoError(
+    elementToFindByClass: string
+  ): HTMLElement | null {
+    const element: HTMLElement | null = document.documentElement.querySelector(
+      "." + elementToFindByClass
+    );
+
+    return element;
+  }
+
   protected changeVisbilityOfGivenElement(
     element: HTMLElement,
     flag: boolean

@@ -31,7 +31,6 @@ body {
     background-color: #3498db;
     width: 10px;
     margin: 0 1px;
-    transition: height 0.2s ease-in-out;
   }
 
   #algo-select {

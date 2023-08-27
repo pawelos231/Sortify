@@ -56,7 +56,7 @@ export class Picker extends Common {
   private addGenNewArrListener() {
     this.newArrBtn.addEventListener("click", () => {
       if (!this.visualizer.isAlgoRunning) {
-        this.visualizer.createNewArr();
+        this.visualizer.initializeNewArr();
       } else {
         this.displayMessageAtTheTopOfTheScreen(
           `${this.algorithm.AlgorithmName} sort is currently running`,
