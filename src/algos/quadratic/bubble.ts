@@ -1,5 +1,5 @@
-import { MoveType } from "../constants/enums";
-import { Move } from "./types";
+import { MoveType } from "../../constants/enums";
+import { Move } from "../types";
 
 export const bubbleSort = (arr: number[]): Move[] => {
   const n = arr.length;
@@ -17,5 +17,7 @@ export const bubbleSort = (arr: number[]): Move[] => {
       }
     }
   }
+  console.log(moves);
+
   return moves;
 };

@@ -31,6 +31,12 @@ export class Visualizer extends Common<true> {
     return this.isRunningAlgorithm;
   }
 
+  set setNumbersCount(value: number) {
+    this.n = value;
+    this.arr = [];
+    this.createNewArr();
+  }
+
   public visualizeNewArr(sorter: SortFunc) {
     sorter(this.arr);
     this.elementId.innerHTML = "";
@@ -50,7 +56,7 @@ export class Visualizer extends Common<true> {
 
     setTimeout(() => {
       this.runSortedArray(i + 1);
-    }, this.speed * 4);
+    }, this.speed * 2);
   }
 
   public animate(moves: Move[]) {
@@ -69,8 +75,8 @@ export class Visualizer extends Common<true> {
     if (move?.type == MoveType.swap) {
       [this.arr[i], this.arr[j]] = [this.arr[j], this.arr[i]];
     }
-    if (i % 5 == 0) this.playSound(200 + this.arr[i] * 500);
-    if (j % 5 == 0) this.playSound(200 + this.arr[j] * 500);
+    if (i % 5 == 0) this.playSound(200 + this.arr[i] * 1000);
+    if (j % 5 == 0) this.playSound(200 + this.arr[j] * 1000);
 
     this.createArrayView(move);
     setTimeout(() => {

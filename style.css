@@ -68,3 +68,12 @@ body {
   .hidden {
     display: none !important;
   }
+
+  .rangeContainer{
+    display: flex;
+    flex-direction: column;
+    top: 20px;
+    position: absolute;
+    right: 20px;
+    width: 20%;
+  }

@@ -1,5 +1,5 @@
-import { MoveType } from "../constants/enums";
-import { Move } from "./types";
+import { MoveType } from "../../constants/enums";
+import { Move } from "../types";
 
 export const insertionSort = (arr: number[]): Move[] => {
   const n = arr.length;

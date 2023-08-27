@@ -1,11 +1,12 @@
 import { VisualizationSpeed } from "../constants/enums";
 import { Common } from "./Common";
 import { Visualizer } from "./Visualizer";
-import { bubbleSort } from "../algos/bubble";
 import { Move } from "../algos/types";
 import { Logger } from "../constants/enums";
 import { Algorithms } from "../constants/enums";
-import { insertionSort } from "../algos/insertion";
+import { insertionSort } from "../algos/quadratic/insertion";
+import { bubbleSort } from "../algos/quadratic/bubble";
+import { selectionSort } from "../algos/quadratic/selection";
 
 const DEFAULT_ARRAY_SIZE = 100;
 
@@ -36,7 +37,19 @@ export class Picker extends Common {
     this.addGenNewArrListener();
     this.addPlayBtnListener();
     this.addSortSelectionListener();
+    this.addRangeListener();
   }
+
+  private addRangeListener() {
+    const range = this.bindElementByClass("range");
+    const rangeP = this.bindElementByClass("rangeInputDescription");
+    range.addEventListener("input", (e: any) => {
+      const val = e.target.value;
+      rangeP.textContent = val;
+      this.visualizer.setNumbersCount = val as number;
+    });
+  }
+
   private addGenNewArrListener() {
     this.newArrBtn.addEventListener("click", () => {
       this.visualizer.createNewArr();
@@ -79,7 +92,7 @@ export class Picker extends Common {
         }
         case Algorithms.SELECTION: {
           this.algorithm = {
-            AlgorithmFunction: insertionSort,
+            AlgorithmFunction: selectionSort,
             AlgorithmName: Algorithms.SELECTION,
           };
           break;
