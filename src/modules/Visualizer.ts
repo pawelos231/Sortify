@@ -1,6 +1,7 @@
 import { MoveType, VisualizationSpeed } from "../constants/enums";
 import { Common } from "./Common";
 import { Move } from "../algos/types";
+import { calculateDuration } from "../helpers/calulateDur";
 type SortFunc = (arr: number[]) => Move[];
 type Check = {
   check: true;
@@ -51,12 +52,12 @@ export class Visualizer extends Common<true> {
 
   private runSortedArray(i: number) {
     if (i > this.arr.length) return;
-    this.playSound(200 + this.arr[i] * 1500);
+    this.playSound(200 + this.arr[i] * 2000);
     this.createArrayView(undefined, { check: true, index: i });
 
     setTimeout(() => {
       this.runSortedArray(i + 1);
-    }, this.speed * 2);
+    }, this.speed);
   }
 
   public animate(moves: Move[]) {
@@ -75,8 +76,8 @@ export class Visualizer extends Common<true> {
     if (move?.type == MoveType.swap) {
       [this.arr[i], this.arr[j]] = [this.arr[j], this.arr[i]];
     }
-    if (i % 5 == 0) this.playSound(200 + this.arr[i] * 1000);
-    if (j % 5 == 0) this.playSound(200 + this.arr[j] * 1000);
+    if (i % 5 == 0) this.playSound(200 + this.arr[i] * 1500);
+    if (j % 5 == 0) this.playSound(200 + this.arr[j] * 1500);
 
     this.createArrayView(move);
     setTimeout(() => {
@@ -92,6 +93,10 @@ export class Visualizer extends Common<true> {
 
   private createArrayView(move?: Move, check?: Check) {
     this.elementId.innerHTML = "";
+    if (check?.index == this.arr.length) {
+      this.createArrayView();
+      return;
+    }
     for (let i = 0; i < this.arr.length; i++) {
       const bar = document.createElement("div");
       bar.classList.add("bar");
@@ -103,16 +108,15 @@ export class Visualizer extends Common<true> {
       if (move && move.indices.includes(i)) {
         bar.style.backgroundColor = move.type == MoveType.swap ? "red" : "blue";
       }
-      if (check?.check && check.index == i) {
-        if (check.index !== this.arr.length - 1)
-          bar.style.backgroundColor = "red";
+      if (check?.check && check.index > i) {
+        bar.style.backgroundColor = "green";
       }
       this.elementId.appendChild(bar);
     }
   }
 
   private playSound(freq: number) {
-    const duration = 5 / this.n;
+    const duration = calculateDuration(this.speed);
     const osc = this.audioContext.createOscillator();
     osc.frequency.value = isNaN(freq) ? 1500 : freq;
     osc.type = "sine";
@@ -125,6 +129,7 @@ export class Visualizer extends Common<true> {
       this.audioContext.currentTime + duration
     );
     osc.connect(node);
+
     node.connect(this.audioContext.destination);
   }
 }
