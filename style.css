@@ -76,3 +76,7 @@ body {
     right: 20px;
     width: 20%;
   }
+
+  .danger{
+    color: red;
+  }

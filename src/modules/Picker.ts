@@ -14,6 +14,10 @@ type AlgorithmType = {
   AlgorithmName: Algorithms;
 };
 
+//beyond that size of array it may impact performance
+const DANGER_ZONE = 1000;
+const DANGER_ZONE_MESSAGE = "Caution: This action may impact performance.";
+
 export class Picker extends Common {
   newArrBtn: HTMLButtonElement;
   playBtn: HTMLButtonElement;
@@ -48,14 +52,24 @@ export class Picker extends Common {
   private addRangeListener() {
     const range = this.bindElementByClass("range");
     const rangeP = this.bindElementByClass("rangeInputDescription");
+    const danger = this.bindElementByClass("danger");
     range.addEventListener(
       "input",
-      this.handleRangeInputChange.bind(this, rangeP)
+      this.handleRangeInputChange.bind(this, rangeP, danger)
     );
   }
 
-  private handleRangeInputChange(rangeP: HTMLElement, event: any) {
+  private handleRangeInputChange(
+    rangeP: HTMLElement,
+    danger: HTMLElement,
+    event: any
+  ) {
     this.resetVisualizer();
+    if (this.n >= DANGER_ZONE) {
+      danger.textContent = DANGER_ZONE_MESSAGE;
+    } else {
+      danger.textContent = "";
+    }
     const val = event.target.value;
     this.n = val;
     rangeP.textContent = val;
