@@ -32,4 +32,5 @@ export enum Algorithms {
   PIGEONHOLE = "pigeonhole",
   CYCLE = "cycle",
   GNOME = "gnome",
+  BITONIC = "bitonic",
 }

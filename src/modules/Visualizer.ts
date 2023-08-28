@@ -89,7 +89,7 @@ export class Visualizer extends Common<true> {
     this.elementId.innerHTML = "";
   }
 
-  private runSortedArray(i: number) {
+  public runSortedArray(i: number) {
     if (i > this.arr.length) return;
     this.playSoundOnStep(i);
     this.iterateOverSortedArray(i);

@@ -6,6 +6,7 @@ import { Logger, Algorithms } from "../constants/enums";
 import { insertionSort } from "../algos/quadratic/insertion";
 import { bubbleSort } from "../algos/quadratic/bubble";
 import { selectionSort } from "../algos/quadratic/selection";
+import { bitonicSort } from "../algos/logarithmic/bitonic";
 
 const DEFAULT_ARRAY_SIZE = 100;
 
@@ -96,6 +97,7 @@ export class Picker extends Common {
 
   private resetVisualizer() {
     this.visualizer.animate = function () {};
+    this.visualizer.runSortedArray = function () {};
     this.visualizer = new Visualizer(this.n, VisualizationSpeed.FAST);
   }
 
@@ -150,6 +152,9 @@ export class Picker extends Common {
         break;
       case Algorithms.INSERTION:
         this.setAlgorithmAndName(insertionSort, Algorithms.INSERTION);
+        break;
+      case Algorithms.BITONIC:
+        this.setAlgorithmAndName(bitonicSort, Algorithms.BITONIC);
         break;
       default:
         this.setAlgorithmAndName(bubbleSort, Algorithms.BUBBLE);
