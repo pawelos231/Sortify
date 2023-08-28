@@ -127,7 +127,10 @@ export class Visualizer extends Common<true> {
   private styleArrayBar(bar: HTMLElement, i: number) {
     bar.style.height = `${this.arr[i] * 100}%`;
     bar.style.width = `${100 / this.n}%`;
-    if (this.n > 200) {
+    if (this.n > 200 && this.n < 300) {
+      bar.style.margin = "0.5px";
+    }
+    if (this.n > 300) {
       bar.style.margin = "0px";
     }
   }

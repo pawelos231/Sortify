@@ -31,7 +31,7 @@ export class Picker extends Common {
     this.playBtn = this.bindElementByClass("play") as HTMLButtonElement;
 
     this.n = n ?? DEFAULT_ARRAY_SIZE;
-    this.visualizer = new Visualizer(this.n, VisualizationSpeed.ULTRA_FAST);
+    this.visualizer = new Visualizer(this.n, VisualizationSpeed.FAST);
     this.algorithm = {
       AlgorithmFunction: bubbleSort,
       AlgorithmName: Algorithms.BUBBLE,
@@ -96,7 +96,7 @@ export class Picker extends Common {
 
   private resetVisualizer() {
     this.visualizer.animate = function () {};
-    this.visualizer = new Visualizer(this.n, VisualizationSpeed.ULTRA_FAST);
+    this.visualizer = new Visualizer(this.n, VisualizationSpeed.FAST);
   }
 
   private addResetListener() {
