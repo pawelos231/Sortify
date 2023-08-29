@@ -51,13 +51,18 @@ export class Picker extends Common {
   }
 
   private addRangeListener() {
-    const range = this.bindElementByClass("range");
+    const range = this.bindElementByClass("range") as HTMLInputElement;
     const rangeP = this.bindElementByClass("rangeInputDescription");
     const danger = this.bindElementByClass("danger");
-    range.addEventListener(
-      "input",
-      this.handleRangeInputChange.bind(this, rangeP, danger)
-    );
+    range.addEventListener("input", (e) => {
+      if (this.algorithm.AlgorithmName == Algorithms.BITONIC) {
+        this.n = Math.pow(2, Number(range.value));
+        rangeP.textContent = String(this.n);
+        this.handleRangeInputChangeBitonic(danger);
+      } else {
+        this.handleRangeInputChange(rangeP, danger, e);
+      }
+    });
   }
 
   private handleRangeInputChange(
@@ -75,6 +80,16 @@ export class Picker extends Common {
     this.n = val;
     rangeP.textContent = val;
     this.visualizer.setNumbersCount = val as number;
+  }
+
+  private handleRangeInputChangeBitonic(danger: HTMLElement) {
+    this.resetVisualizer();
+    if (this.n >= DANGER_ZONE) {
+      danger.textContent = DANGER_ZONE_MESSAGE;
+    } else {
+      danger.textContent = "";
+    }
+    this.visualizer.setNumbersCount = this.n;
   }
 
   private addGenNewArrListener() {
@@ -138,9 +153,38 @@ export class Picker extends Common {
     );
   }
 
+  private handleBitonicSortSelect() {
+    const range = this.bindElementByClass("range") as HTMLInputElement;
+    const rangeP = this.bindElementByClass("rangeInputDescription");
+
+    range.max = "10";
+    range.min = "4";
+    range.value = "4";
+    range.step = range.value !== "4" ? String(Number(range.value) * 2) : "1";
+    this.n = Number(range.value) * 4;
+    this.resetVisualizer();
+    rangeP.textContent = String(Number(range.value) * 4);
+  }
+
+  private resetRangeValuesToDefault() {
+    const range = this.bindElementByClass("range") as HTMLInputElement;
+    const rangeP = this.bindElementByClass("rangeInputDescription");
+
+    range.max = "2000";
+    range.min = "10";
+    range.value = "100";
+    range.step = "5";
+
+    this.n = Number(range.value);
+    this.resetVisualizer();
+
+    rangeP.textContent = range.value;
+  }
+
   private handleSortSelectionChange(event: Event) {
     const sortType = (event.target as HTMLSelectElement).value as Algorithms;
 
+    this.resetRangeValuesToDefault();
     this.resetVisualizer();
 
     switch (sortType) {
@@ -155,6 +199,7 @@ export class Picker extends Common {
         break;
       case Algorithms.BITONIC:
         this.setAlgorithmAndName(bitonicSort, Algorithms.BITONIC);
+        this.handleBitonicSortSelect();
         break;
       default:
         this.setAlgorithmAndName(bubbleSort, Algorithms.BUBBLE);
