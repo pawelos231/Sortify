@@ -1,9 +1,11 @@
 export enum VisualizationSpeed {
   ULTRA_FAST = 4,
-  FAST = 6,
-  AVERAGE = 10,
-  SLOW = 15,
-  ULTRA_SLOW = 50,
+  FASTER = 8,
+  FAST = 15,
+  AVERAGE = 20,
+  SLOW = 30,
+  SLOWER = 50,
+  ULTRA_SLOW = 250,
 }
 
 export enum MoveType {

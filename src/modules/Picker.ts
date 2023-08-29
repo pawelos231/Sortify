@@ -24,15 +24,17 @@ export class Picker extends Common {
   playBtn: HTMLButtonElement;
   algorithm: AlgorithmType;
   visualizer: Visualizer;
+  speed: VisualizationSpeed;
   n: number;
 
   constructor(n?: number) {
     super();
     this.newArrBtn = this.bindElementByClass("newArr") as HTMLButtonElement;
     this.playBtn = this.bindElementByClass("play") as HTMLButtonElement;
-
+    this.speed = VisualizationSpeed.FAST;
     this.n = n ?? DEFAULT_ARRAY_SIZE;
-    this.visualizer = new Visualizer(this.n, VisualizationSpeed.FAST);
+
+    this.visualizer = new Visualizer(this.n, this.speed);
     this.algorithm = {
       AlgorithmFunction: bubbleSort,
       AlgorithmName: Algorithms.BUBBLE,
@@ -48,6 +50,21 @@ export class Picker extends Common {
     this.addSortSelectionListener();
     this.addRangeListener();
     this.addResetListener();
+    this.addSpeedSelectionListener();
+  }
+
+  private addSpeedSelectionListener() {
+    const select = this.bindElementByClass("speed");
+    select.addEventListener(
+      "change",
+      this.handleSpeedSelectionChange.bind(this)
+    );
+  }
+
+  private handleSpeedSelectionChange(event: any) {
+    const speed = Number(VisualizationSpeed[event.target.value]);
+    this.speed = speed;
+    this.visualizer.setSpeed = speed;
   }
 
   private addRangeListener() {
@@ -113,7 +130,7 @@ export class Picker extends Common {
   private resetVisualizer() {
     this.visualizer.animate = function () {};
     this.visualizer.runSortedArray = function () {};
-    this.visualizer = new Visualizer(this.n, VisualizationSpeed.FAST);
+    this.visualizer = new Visualizer(this.n, this.speed);
   }
 
   private addResetListener() {

@@ -36,6 +36,10 @@ export class Visualizer extends Common<true> {
     this.initializeNewArr();
   }
 
+  set setSpeed(speed: number) {
+    this.speed = speed;
+  }
+
   public visualizeNewArr(sorter: SortFunc) {
     sorter(this.arr);
     this.clearArrayView();
@@ -106,7 +110,30 @@ export class Visualizer extends Common<true> {
   }
 
   private playSoundOnStep(step: number) {
-    if (step % 5 === 0) {
+    const fastest =
+      this.speed == VisualizationSpeed.FASTER ||
+      this.speed == VisualizationSpeed.ULTRA_FAST;
+    const avg =
+      this.speed == VisualizationSpeed.FAST ||
+      this.speed == VisualizationSpeed.AVERAGE;
+    const slow =
+      this.speed == VisualizationSpeed.SLOW ||
+      this.speed == VisualizationSpeed.SLOWER;
+    const slowest = this.speed === VisualizationSpeed.ULTRA_SLOW;
+
+    if (fastest && step % 5 === 0) {
+      this.playSound(200 + this.arr[step] * 1500);
+    }
+
+    if (avg && step % 3 === 0) {
+      this.playSound(200 + this.arr[step] * 1500);
+    }
+
+    if (slow && step % 2 === 0) {
+      this.playSound(200 + this.arr[step] * 1500);
+    }
+
+    if (slowest) {
       this.playSound(200 + this.arr[step] * 1500);
     }
   }
