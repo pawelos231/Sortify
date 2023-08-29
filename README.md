@@ -82,6 +82,24 @@ Heap Sort is a comparison-based sorting algorithm that builds a binary heap from
 
 Sortify allows you to create arrays of up to 2000 elements. The sorting process is visually represented on the screen, helping you grasp the step-by-step transformations each algorithm applies to the data. By interacting with Sortify, you can better understand the differences in performance and behavior among these sorting algorithms.
 
+## Visualization Speeds:
+
+Sortify offers a range of visualization speeds to tailor your experience:
+
+- Ultra Fast: 4ms per swap
+- Faster: 8ms per swap
+- Fast: 15ms per swap
+- Average: 20ms per swap
+- Slow: 30ms per swap
+- Slower: 50ms per swap
+- Ultra Slow: 250ms per swap
+
+For the most detailed experience, choose lower time options. This allows you to observe every step of the sorting process.
+
+## Sound Feature:
+
+Sortify supports a sound-making feature that enhances your experience. Sounds are generated during sorting operations, giving you both a visual and auditory understanding of the algorithms in action.
+
 ## Conclusion:
 
 Sortify provides a unique opportunity to visualize the inner workings of various sorting algorithms. Whether you are a beginner looking to learn about sorting or an experienced programmer aiming to compare algorithm efficiencies, Sortify offers an engaging platform to explore the fascinating world of sorting algorithms. Enjoy the experience and happy sorting!
