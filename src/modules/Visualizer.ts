@@ -176,17 +176,18 @@ export class Visualizer extends Common<true> {
 
   private createArrayView(move?: Move, prevMove?: Move) {
     if (move && prevMove) {
-      const indice1 = move.indices[0];
-      const indice2 = move.indices[1];
-
-      const oldIndice1 = prevMove.indices[0];
-      const oldIndice2 = prevMove.indices[1];
+      const [idx1, idx2, oldIdx1, oldIdx2] = [
+        move.indices[0],
+        move.indices[1],
+        prevMove.indices[0],
+        prevMove.indices[1],
+      ];
 
       const [bar1, bar2, oldBar1, oldBar2] = [
-        this.bindElementByClass(`bar${indice1}`),
-        this.bindElementByClass(`bar${indice2}`),
-        this.bindElementByClass(`bar${oldIndice1}`),
-        this.bindElementByClass(`bar${oldIndice2}`),
+        this.bindElementByClass(`bar${idx1}`),
+        this.bindElementByClass(`bar${idx2}`),
+        this.bindElementByClass(`bar${oldIdx1}`),
+        this.bindElementByClass(`bar${oldIdx2}`),
       ];
 
       const temp = bar1.style.height;
