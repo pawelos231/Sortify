@@ -58,7 +58,7 @@ export class Visualizer extends Common<true> {
     this.createArrayView();
   }
 
-  public animate(moves: Move[]) {
+  public animate(moves: Move[], prevMove: Move) {
     if (moves.length === 0) {
       this.createArrayView();
       this.runSortedArray(0);
@@ -74,12 +74,13 @@ export class Visualizer extends Common<true> {
     if (!move?.type || move?.type === MoveType.swap) {
       [this.arr[i], this.arr[j]] = [this.arr[j], this.arr[i]];
     }
+
     this.playSoundOnStep(i);
     this.playSoundOnStep(j);
 
-    this.createArrayView(move);
+    this.createArrayView(move, prevMove);
     setTimeout(() => {
-      this.animate(moves);
+      this.animate(moves, move!);
     }, this.speed);
   }
 
@@ -103,10 +104,21 @@ export class Visualizer extends Common<true> {
     }, this.speed);
   }
 
+  private setColorOfWholeArray() {
+    for (let i = 0; i < this.arr.length; i++) {
+      const bar = this.bindElementByClass(`bar${i}`);
+      bar.style.backgroundColor = "#3498db";
+    }
+  }
+
   private iterateOverSortedArray(i: number) {
-    const bar = this.bindElementByClass(`bar${i}`);
-    bar.style.backgroundColor = "green";
-    if (i === this.arr.length - 1) this.createArrayView();
+    if (i >= this.arr.length) {
+      this.setColorOfWholeArray();
+      return;
+    }
+    const bar = this.bindElementByClassNoError(`bar${i}`);
+
+    bar!.style.backgroundColor = "green";
   }
 
   private playSoundOnStep(step: number) {
@@ -162,16 +174,33 @@ export class Visualizer extends Common<true> {
     }
   }
 
-  private createArrayView(move?: Move) {
-    for (let i = 0; i < this.arr.length; i++) {
-      const bar = this.bindElementByClass(`bar${i}`);
-      this.styleArrayBar(bar, i);
-      bar.style.backgroundColor = "#3498db";
+  private createArrayView(move?: Move, prevMove?: Move) {
+    if (move && prevMove) {
+      const indice1 = move.indices[0];
+      const indice2 = move.indices[1];
 
-      if (move && move.indices.includes(i)) {
-        bar.style.backgroundColor =
-          !move.type || move.type === MoveType.swap ? "red" : "blue";
-      }
+      const oldIndice1 = prevMove.indices[0];
+      const oldIndice2 = prevMove.indices[1];
+
+      const [bar1, bar2, oldBar1, oldBar2] = [
+        this.bindElementByClass(`bar${indice1}`),
+        this.bindElementByClass(`bar${indice2}`),
+        this.bindElementByClass(`bar${oldIndice1}`),
+        this.bindElementByClass(`bar${oldIndice2}`),
+      ];
+
+      const temp = bar1.style.height;
+      bar1.style.height = bar2.style.height;
+      bar2.style.height = temp;
+
+      oldBar2.style.backgroundColor = "#3498db";
+      oldBar1.style.backgroundColor = "#3498db";
+
+      bar1.style.backgroundColor = "red";
+      bar2.style.backgroundColor = "red";
+    }
+    if (!prevMove && !move) {
+      this.setColorOfWholeArray();
     }
   }
 

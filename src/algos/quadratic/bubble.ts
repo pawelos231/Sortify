@@ -16,7 +16,6 @@ export const bubbleSort = (arr: number[]): Move[] => {
       }
     }
   }
-  console.log(moves);
 
   return moves;
 };

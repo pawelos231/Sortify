@@ -16,7 +16,7 @@ type AlgorithmType = {
 };
 
 //beyond that size of array it may impact performance
-const DANGER_ZONE = 1000;
+const DANGER_ZONE = 1500;
 const DANGER_ZONE_MESSAGE = "Caution: This action may impact performance.";
 
 export class Picker extends Common {
@@ -153,7 +153,7 @@ export class Picker extends Common {
     const copy = [...this.visualizer.getArr];
     const moves = this.algorithm.AlgorithmFunction(copy);
     if (!this.visualizer.isAlgoRunning) {
-      this.visualizer.animate(moves);
+      this.visualizer.animate(moves, moves[0]);
     } else {
       this.displayMessageAtTheTopOfTheScreen(
         `${this.algorithm.AlgorithmName} sort is currently running`,
@@ -174,7 +174,7 @@ export class Picker extends Common {
     const range = this.bindElementByClass("range") as HTMLInputElement;
     const rangeP = this.bindElementByClass("rangeInputDescription");
 
-    range.max = "10";
+    range.max = "11";
     range.min = "4";
     range.value = "4";
     range.step = range.value !== "4" ? String(Number(range.value) * 2) : "1";
