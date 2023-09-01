@@ -7,6 +7,7 @@ import { insertionSort } from "../algos/quadratic/insertion";
 import { bubbleSort } from "../algos/quadratic/bubble";
 import { selectionSort } from "../algos/quadratic/selection";
 import { bitonicSort } from "../algos/logarithmic/bitonic";
+import { bogosort } from "../algos/weird/bogoSort";
 
 const DEFAULT_ARRAY_SIZE = 100;
 
@@ -183,6 +184,19 @@ export class Picker extends Common {
     rangeP.textContent = String(Number(range.value) * 4);
   }
 
+  private handleBogoSortSelect() {
+    const range = this.bindElementByClass("range") as HTMLInputElement;
+    const rangeP = this.bindElementByClass("rangeInputDescription");
+
+    range.max = "10";
+    range.min = "4";
+    range.value = "4";
+    range.step = "1";
+    this.n = Number(range.value);
+    this.resetVisualizer();
+    rangeP.textContent = range.value;
+  }
+
   private resetRangeValuesToDefault() {
     const range = this.bindElementByClass("range") as HTMLInputElement;
     const rangeP = this.bindElementByClass("rangeInputDescription");
@@ -217,6 +231,10 @@ export class Picker extends Common {
       case Algorithms.BITONIC:
         this.setAlgorithmAndName(bitonicSort, Algorithms.BITONIC);
         this.handleBitonicSortSelect();
+        break;
+      case Algorithms.BOGO:
+        this.setAlgorithmAndName(bogosort, Algorithms.BOGO);
+        this.handleBogoSortSelect();
         break;
       default:
         this.setAlgorithmAndName(bubbleSort, Algorithms.BUBBLE);

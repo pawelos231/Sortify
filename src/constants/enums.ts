@@ -27,6 +27,7 @@ export enum Algorithms {
   MERGE = "merge",
   HEAP = "heap",
   SHELL = "shell",
+  BOGO = "bogo",
   COUNTING = "counting",
   RADIX = "radix",
   BUCKET = "bucket",
