@@ -588,6 +588,7 @@ var _insertion = require("../algos/quadratic/insertion");
 var _bubble = require("../algos/quadratic/bubble");
 var _selection = require("../algos/quadratic/selection");
 var _bitonic = require("../algos/logarithmic/bitonic");
+var _bogoSort = require("../algos/weird/bogoSort");
 const DEFAULT_ARRAY_SIZE = 100;
 //beyond that size of array it may impact performance
 const DANGER_ZONE = 1500;
@@ -696,6 +697,16 @@ class Picker extends (0, _common.Common) {
         this.resetVisualizer();
         rangeP.textContent = String(Number(range.value) * 4);
     }
+    handleBogoSortSelect() {
+        const range = this.bindElementByClass("range");
+        const rangeP = this.bindElementByClass("rangeInputDescription");
+        range.max = "10";
+        range.min = "4";
+        range.step = "1";
+        this.n = Number(range.value);
+        this.resetVisualizer();
+        rangeP.textContent = String(range.value);
+    }
     resetRangeValuesToDefault() {
         const range = this.bindElementByClass("range");
         const rangeP = this.bindElementByClass("rangeInputDescription");
@@ -725,6 +736,10 @@ class Picker extends (0, _common.Common) {
                 this.setAlgorithmAndName((0, _bitonic.bitonicSort), (0, _enums.Algorithms).BITONIC);
                 this.handleBitonicSortSelect();
                 break;
+            case (0, _enums.Algorithms).BOGO:
+                this.setAlgorithmAndName((0, _bogoSort.bogosort), (0, _enums.Algorithms).BOGO);
+                this.handleBogoSortSelect();
+                break;
             default:
                 this.setAlgorithmAndName((0, _bubble.bubbleSort), (0, _enums.Algorithms).BUBBLE);
         }
@@ -737,7 +752,7 @@ class Picker extends (0, _common.Common) {
     }
 }
 
-},{"./Common":"dMCAR","./Visualizer":"bYpvg","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../constants/enums":"7XfrQ","../algos/quadratic/insertion":"hdqPT","../algos/quadratic/bubble":"gvyFg","../algos/quadratic/selection":"jWa54","../algos/logarithmic/bitonic":"av4La"}],"dMCAR":[function(require,module,exports) {
+},{"./Common":"dMCAR","./Visualizer":"bYpvg","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../constants/enums":"7XfrQ","../algos/quadratic/insertion":"hdqPT","../algos/quadratic/bubble":"gvyFg","../algos/quadratic/selection":"jWa54","../algos/logarithmic/bitonic":"av4La","../algos/weird/bogoSort":"dKYpR"}],"dMCAR":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Common", ()=>Common);
@@ -879,6 +894,7 @@ var Algorithms;
     Algorithms["QUICK"] = "quick";
     Algorithms["MERGE"] = "merge";
     Algorithms["HEAP"] = "heap";
+    Algorithms["BOGO"] = "bogo";
     Algorithms["SHELL"] = "shell";
     Algorithms["COUNTING"] = "counting";
     Algorithms["RADIX"] = "radix";
@@ -1187,6 +1203,36 @@ function bitonicSort(arr) {
             }
         }
     }
+    return moves;
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dKYpR":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "bogosort", ()=>bogosort);
+function isSorted(arr) {
+    for(let i = 1; i < arr.length; i++){
+        if (arr[i] < arr[i - 1]) return false;
+    }
+    return true;
+}
+function shuffleArray(arr, moves) {
+    for(let i = arr.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        moves.push({
+            indices: [
+                i,
+                j
+            ]
+        });
+        const temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+}
+function bogosort(arr) {
+    const moves = [];
+    while(!isSorted(arr))shuffleArray(arr, moves);
     return moves;
 }
 
