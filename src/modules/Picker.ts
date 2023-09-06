@@ -8,6 +8,7 @@ import { bubbleSort } from "../algos/quadratic/bubble";
 import { selectionSort } from "../algos/quadratic/selection";
 import { bitonicSort } from "../algos/logarithmic/bitonic";
 import { bogosort } from "../algos/weird/bogoSort";
+import { quickSortWrapper } from "../algos/logarithmic/quickSort";
 
 const DEFAULT_ARRAY_SIZE = 100;
 
@@ -235,6 +236,9 @@ export class Picker extends Common {
       case Algorithms.BOGO:
         this.setAlgorithmAndName(bogosort, Algorithms.BOGO);
         this.handleBogoSortSelect();
+        break;
+      case Algorithms.QUICK:
+        this.setAlgorithmAndName(quickSortWrapper, Algorithms.QUICK);
         break;
       default:
         this.setAlgorithmAndName(bubbleSort, Algorithms.BUBBLE);
