@@ -589,6 +589,7 @@ var _bubble = require("../algos/quadratic/bubble");
 var _selection = require("../algos/quadratic/selection");
 var _bitonic = require("../algos/logarithmic/bitonic");
 var _bogoSort = require("../algos/weird/bogoSort");
+var _quickSort = require("../algos/logarithmic/quickSort");
 const DEFAULT_ARRAY_SIZE = 100;
 //beyond that size of array it may impact performance
 const DANGER_ZONE = 1500;
@@ -702,10 +703,11 @@ class Picker extends (0, _common.Common) {
         const rangeP = this.bindElementByClass("rangeInputDescription");
         range.max = "10";
         range.min = "4";
+        range.value = "4";
         range.step = "1";
         this.n = Number(range.value);
         this.resetVisualizer();
-        rangeP.textContent = String(range.value);
+        rangeP.textContent = range.value;
     }
     resetRangeValuesToDefault() {
         const range = this.bindElementByClass("range");
@@ -740,6 +742,9 @@ class Picker extends (0, _common.Common) {
                 this.setAlgorithmAndName((0, _bogoSort.bogosort), (0, _enums.Algorithms).BOGO);
                 this.handleBogoSortSelect();
                 break;
+            case (0, _enums.Algorithms).QUICK:
+                this.setAlgorithmAndName((0, _quickSort.quickSortWrapper), (0, _enums.Algorithms).QUICK);
+                break;
             default:
                 this.setAlgorithmAndName((0, _bubble.bubbleSort), (0, _enums.Algorithms).BUBBLE);
         }
@@ -752,7 +757,7 @@ class Picker extends (0, _common.Common) {
     }
 }
 
-},{"./Common":"dMCAR","./Visualizer":"bYpvg","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../constants/enums":"7XfrQ","../algos/quadratic/insertion":"hdqPT","../algos/quadratic/bubble":"gvyFg","../algos/quadratic/selection":"jWa54","../algos/logarithmic/bitonic":"av4La","../algos/weird/bogoSort":"dKYpR"}],"dMCAR":[function(require,module,exports) {
+},{"./Common":"dMCAR","./Visualizer":"bYpvg","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../constants/enums":"7XfrQ","../algos/quadratic/insertion":"hdqPT","../algos/quadratic/bubble":"gvyFg","../algos/quadratic/selection":"jWa54","../algos/logarithmic/bitonic":"av4La","../algos/weird/bogoSort":"dKYpR","../algos/logarithmic/quickSort":"eTllg"}],"dMCAR":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Common", ()=>Common);
@@ -894,8 +899,8 @@ var Algorithms;
     Algorithms["QUICK"] = "quick";
     Algorithms["MERGE"] = "merge";
     Algorithms["HEAP"] = "heap";
-    Algorithms["BOGO"] = "bogo";
     Algorithms["SHELL"] = "shell";
+    Algorithms["BOGO"] = "bogo";
     Algorithms["COUNTING"] = "counting";
     Algorithms["RADIX"] = "radix";
     Algorithms["BUCKET"] = "bucket";
@@ -1235,6 +1240,52 @@ function bogosort(arr) {
     while(!isSorted(arr))shuffleArray(arr, moves);
     return moves;
 }
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"eTllg":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "quickSortWrapper", ()=>quickSortWrapper);
+const quickSortWrapper = (arr)=>{
+    const moves = [];
+    function quickSort(arr, low = 0, high = arr.length - 1) {
+        if (low < high) {
+            const pivotIndex = partition(arr, low, high);
+            quickSort(arr, low, pivotIndex - 1);
+            quickSort(arr, pivotIndex + 1, high);
+        }
+    }
+    function partition(arr, low, high) {
+        const pivot = arr[high];
+        let i = low - 1;
+        for(let j = low; j < high; j++)if (arr[j] <= pivot) {
+            i++;
+            moves.push({
+                indices: [
+                    i,
+                    j
+                ]
+            });
+            [arr[i], arr[j]] = [
+                arr[j],
+                arr[i]
+            ];
+        }
+        moves.push({
+            indices: [
+                i + 1,
+                high
+            ]
+        });
+        [arr[i + 1], arr[high]] = [
+            arr[high],
+            arr[i + 1]
+        ];
+        return i + 1;
+    }
+    quickSort(arr);
+    console.log(arr);
+    return moves;
+};
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["YaJJs","iwNeP"], "iwNeP", "parcelRequire94c2")
 
