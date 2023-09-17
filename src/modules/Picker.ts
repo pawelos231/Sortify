@@ -9,6 +9,7 @@ import { selectionSort } from "../algos/quadratic/selection";
 import { bitonicSort } from "../algos/logarithmic/bitonic";
 import { bogosort } from "../algos/weird/bogoSort";
 import { quickSortWrapper } from "../algos/logarithmic/quickSort";
+import { heapSort } from "../algos/logarithmic/heapSort";
 
 const DEFAULT_ARRAY_SIZE = 100;
 
@@ -239,6 +240,9 @@ export class Picker extends Common {
         break;
       case Algorithms.QUICK:
         this.setAlgorithmAndName(quickSortWrapper, Algorithms.QUICK);
+        break;
+      case Algorithms.HEAP:
+        this.setAlgorithmAndName(heapSort, Algorithms.HEAP);
         break;
       default:
         this.setAlgorithmAndName(bubbleSort, Algorithms.BUBBLE);

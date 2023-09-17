@@ -1,4 +1,3 @@
-import { MoveType } from "../../constants/enums";
 import { Move } from "../types";
 
 export const selectionSort = (arr: number[]): Move[] => {
