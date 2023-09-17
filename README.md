@@ -34,15 +34,7 @@ Selection Sort is a simple in-place comparison-based sorting algorithm. It repea
 - Space Complexity: O(1)
 - Characteristics: Easy to understand, but inefficient for large datasets.
 
-### 4. Counting Sort:
-
-Counting Sort is a non-comparison-based sorting algorithm that works well for integers with a limited range. It counts the occurrences of each element and uses this information to reconstruct a sorted array.
-
-- Time Complexity: O(n + k), where k is the range of input
-- Space Complexity: O(n + k)
-- Characteristics: Efficient for small integer ranges.
-
-### 5. Insertion Sort:
+### 4. Insertion Sort:
 
 Insertion Sort is a simple in-place comparison-based sorting algorithm. It builds the final sorted array one element at a time by repeatedly inserting unsorted elements into the sorted part of the array.
 
@@ -52,7 +44,7 @@ Insertion Sort is a simple in-place comparison-based sorting algorithm. It build
 - Space Complexity: O(1)
 - Characteristics: Efficient for small datasets or partially sorted arrays.
 
-### 6. Quick Sort:
+### 5. Quick Sort:
 
 Quick Sort is a widely used comparison-based sorting algorithm. It partitions the array into two sub-arrays, elements less than a chosen pivot and elements greater than the pivot, and then recursively sorts these sub-arrays.
 
@@ -62,7 +54,7 @@ Quick Sort is a widely used comparison-based sorting algorithm. It partitions th
 - Space Complexity: O(log(n))
 - Characteristics: Efficient in practice, but susceptible to poor pivot choice.
 
-### 7. Merge Sort:
+### 6. Merge Sort:
 
 Merge Sort is a stable, comparison-based sorting algorithm that divides the array into two halves, recursively sorts them, and then merges them to achieve a fully sorted array.
 
@@ -70,7 +62,7 @@ Merge Sort is a stable, comparison-based sorting algorithm that divides the arra
 - Space Complexity: O(n)
 - Characteristics: Consistently good performance and stability.
 
-### 8. Heap Sort:
+### 7. Heap Sort:
 
 Heap Sort is a comparison-based sorting algorithm that builds a binary heap from the array and repeatedly extracts the maximum element from the heap to build the sorted array.
 
