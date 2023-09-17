@@ -590,6 +590,7 @@ var _selection = require("../algos/quadratic/selection");
 var _bitonic = require("../algos/logarithmic/bitonic");
 var _bogoSort = require("../algos/weird/bogoSort");
 var _quickSort = require("../algos/logarithmic/quickSort");
+var _heapSort = require("../algos/logarithmic/heapSort");
 const DEFAULT_ARRAY_SIZE = 100;
 //beyond that size of array it may impact performance
 const DANGER_ZONE = 1500;
@@ -745,6 +746,9 @@ class Picker extends (0, _common.Common) {
             case (0, _enums.Algorithms).QUICK:
                 this.setAlgorithmAndName((0, _quickSort.quickSortWrapper), (0, _enums.Algorithms).QUICK);
                 break;
+            case (0, _enums.Algorithms).HEAP:
+                this.setAlgorithmAndName((0, _heapSort.heapSort), (0, _enums.Algorithms).HEAP);
+                break;
             default:
                 this.setAlgorithmAndName((0, _bubble.bubbleSort), (0, _enums.Algorithms).BUBBLE);
         }
@@ -757,7 +761,7 @@ class Picker extends (0, _common.Common) {
     }
 }
 
-},{"./Common":"dMCAR","./Visualizer":"bYpvg","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../constants/enums":"7XfrQ","../algos/quadratic/insertion":"hdqPT","../algos/quadratic/bubble":"gvyFg","../algos/quadratic/selection":"jWa54","../algos/logarithmic/bitonic":"av4La","../algos/weird/bogoSort":"dKYpR","../algos/logarithmic/quickSort":"eTllg"}],"dMCAR":[function(require,module,exports) {
+},{"./Common":"dMCAR","./Visualizer":"bYpvg","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../constants/enums":"7XfrQ","../algos/quadratic/insertion":"hdqPT","../algos/quadratic/bubble":"gvyFg","../algos/quadratic/selection":"jWa54","../algos/logarithmic/bitonic":"av4La","../algos/weird/bogoSort":"dKYpR","../algos/logarithmic/quickSort":"eTllg","../algos/logarithmic/heapSort":"glHry"}],"dMCAR":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Common", ()=>Common);
@@ -1284,6 +1288,50 @@ const quickSortWrapper = (arr)=>{
     }
     quickSort(arr);
     console.log(arr);
+    return moves;
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"glHry":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "heapSort", ()=>heapSort);
+const heapify = (arr, n, i, moves)=>{
+    let largest = i;
+    let left = 2 * i + 1;
+    let right = 2 * i + 2;
+    if (left < n && arr[left] > arr[largest]) largest = left;
+    if (right < n && arr[right] > arr[largest]) largest = right;
+    if (largest != i) {
+        moves.push({
+            indices: [
+                largest,
+                i
+            ]
+        });
+        [arr[i], arr[largest]] = [
+            arr[largest],
+            arr[i]
+        ];
+        heapify(arr, n, largest, moves);
+    }
+};
+const heapSort = (arr)=>{
+    const n = arr.length;
+    let moves = [];
+    for(let i = Math.floor(n / 2) - 1; i >= 0; i--)heapify(arr, n, i, moves);
+    for(var i = n - 1; i > 0; i--){
+        moves.push({
+            indices: [
+                i,
+                0
+            ]
+        });
+        [arr[0], arr[i]] = [
+            arr[i],
+            arr[0]
+        ];
+        heapify(arr, i, 0, moves);
+    }
     return moves;
 };
 
